@@ -10,7 +10,6 @@ clean:
 	rm -f flake-coverage.out
 
 build: deps
-	dep ensure
 	go build ./...
 
 test: build
@@ -20,3 +19,6 @@ coverage: build
 	go test -v -coverprofile=flake-coverage.out -covermode count -cover ./...
 	go tool cover -html=flake-coverage.out
 	rm flake-coverage.out
+
+install: build
+	go install -i ./cmd/flake
