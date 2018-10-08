@@ -20,5 +20,8 @@ coverage: build
 	go tool cover -html=flake-coverage.out
 	rm flake-coverage.out
 
-install: build
+validate: test
+	golangci-lint run
+
+install: validate
 	go install -i ./cmd/flake
