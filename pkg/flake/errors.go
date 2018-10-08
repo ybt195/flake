@@ -1,4 +1,4 @@
-package pkg
+package flake
 
 import "fmt"
 
