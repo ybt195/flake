@@ -7,6 +7,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 type flakeOptions struct {
 	bucket uint64
 	count  int
@@ -17,9 +23,10 @@ var opts = flakeOptions{}
 
 func newFlakeCommand() *cobra.Command {
 	var rootCmd = &cobra.Command{
-		Use:   "flake",
-		Short: "Flake generates time-based 64-bit unsigned integers",
-		RunE:  runFlake,
+		Use:     "flake",
+		Version: fmt.Sprintf("%s (build %s on %s)", version, commit, date),
+		Short:   "Flake generates time-based 64-bit unsigned integers",
+		RunE:    runFlake,
 	}
 
 	rootCmd.Flags().Uint64VarP(&opts.bucket, "bucket", "b", 0, "Bucket id for all generated flake ids.")
