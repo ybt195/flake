@@ -1,6 +1,9 @@
 # Vendor directory
 vendor/
 
+# Distribution directory
+dist/
+
 # Binaries for programs and plugins
 *.exe
 *.exe~

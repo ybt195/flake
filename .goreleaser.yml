@@ -1,0 +1,33 @@
+project_name: flake
+
+builds:
+  - main: ./cmd/flake/
+    goos:
+      - darwin
+      - freebsd
+      - linux
+      - openbsd
+      - solaris
+      - windows
+    goarch:
+      - amd64
+
+archive:
+  replacements:
+    amd64: 64-bit
+    darwin: macOS
+
+  wrap_in_directory: true
+
+  format: tar.gz
+
+  format_overrides:
+    - goos: windows
+      format: zip
+
+  files:
+    - LICENSE
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+
