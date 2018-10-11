@@ -1,6 +1,7 @@
 package flake
 
 import (
+	"encoding/binary"
 	"fmt"
 )
 
@@ -35,6 +36,12 @@ func (f FlakeID) String() string {
 
 func (f FlakeID) Uint64() uint64 {
 	return uint64(f)
+}
+
+func (f FlakeID) Bytes() []byte {
+	buf := make([]byte, 8)
+	binary.BigEndian.PutUint64(buf, f.Uint64())
+	return buf
 }
 
 func (f FlakeID) Binary() string {
