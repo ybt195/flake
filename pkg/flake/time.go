@@ -18,6 +18,10 @@ func (f Time) String() string {
 	return f.StandardTime().Format("2006-01-02T15:04:05.999Z07:00")
 }
 
+func FromStandardTime(standard time.Time) Time {
+	return Time(toMillis(standard) - epoch)
+}
+
 func now() uint64 {
 	return toMillis(time.Now()) - epoch
 }
