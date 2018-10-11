@@ -8,13 +8,13 @@ const (
 	epoch = uint64(1262304000000)
 )
 
-type FlakeTime uint64
+type Time uint64
 
-func (f FlakeTime) Timestamp() time.Time {
+func (f Time) Timestamp() time.Time {
 	return time.Unix(0, int64(uint64(f)+epoch)*int64(time.Millisecond)).In(time.UTC)
 }
 
-func (f FlakeTime) String() string {
+func (f Time) String() string {
 	return f.Timestamp().Format("2006-01-02T15:04:05.999Z07:00")
 }
 

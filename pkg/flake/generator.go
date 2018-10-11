@@ -23,7 +23,7 @@ func New(bucketID uint64) (*Generator, error) {
 	}, nil
 }
 
-func (g *Generator) Next() (FlakeID, error) {
+func (g *Generator) Next() (ID, error) {
 	timestamp := now()
 
 	g.lock.Lock()
@@ -31,8 +31,8 @@ func (g *Generator) Next() (FlakeID, error) {
 		g.lock.Unlock()
 		return zeroID, TimeMovedBack{
 			BucketID:      g.bucketID,
-			LastTimestamp: FlakeTime(g.currentTimestamp),
-			Timestamp:     FlakeTime(timestamp),
+			LastTimestamp: Time(g.currentTimestamp),
+			Timestamp:     Time(timestamp),
 		}
 	} else if timestamp > g.currentTimestamp {
 		g.currentTimestamp = timestamp
@@ -43,13 +43,13 @@ func (g *Generator) Next() (FlakeID, error) {
 	g.lock.Unlock()
 
 	if sequence > sequenceLimit {
-		return zeroID, SequenceUnavailable{BucketID: g.bucketID, Timestamp: FlakeTime(timestamp)}
+		return zeroID, SequenceUnavailable{BucketID: g.bucketID, Timestamp: Time(timestamp)}
 	}
 
-	return FlakeID((g.bucketID << (timestampBits + sequenceBits)) | (timestamp << sequenceBits) | sequence), nil
+	return ID((g.bucketID << (timestampBits + sequenceBits)) | (timestamp << sequenceBits) | sequence), nil
 }
 
-func (g *Generator) Must() FlakeID {
+func (g *Generator) Must() ID {
 	for {
 		if id, err := g.Next(); err == nil {
 			return id

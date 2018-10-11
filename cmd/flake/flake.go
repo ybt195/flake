@@ -31,7 +31,7 @@ func runFlake(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
-func formatID(id flake.FlakeID) (string, error) {
+func formatID(id flake.ID) (string, error) {
 	switch opts.format {
 	case BINARY:
 		return id.Binary(), nil

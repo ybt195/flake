@@ -4,7 +4,7 @@ import "fmt"
 
 type SequenceUnavailable struct {
 	BucketID  uint64
-	Timestamp FlakeTime
+	Timestamp Time
 }
 
 func (err SequenceUnavailable) Error() string {
@@ -13,8 +13,8 @@ func (err SequenceUnavailable) Error() string {
 
 type TimeMovedBack struct {
 	BucketID      uint64
-	LastTimestamp FlakeTime
-	Timestamp     FlakeTime
+	LastTimestamp Time
+	Timestamp     Time
 }
 
 func (err TimeMovedBack) Error() string {
