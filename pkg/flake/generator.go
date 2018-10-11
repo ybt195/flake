@@ -30,7 +30,7 @@ func (g *Generator) Next() (ID, error) {
 	if timestamp < g.currentTimestamp {
 		g.lock.Unlock()
 		return zeroID, TimeMovedBack{
-			BucketID:      g.bucketID,
+			Bucket:        g.bucketID,
 			LastTimestamp: Time(g.currentTimestamp),
 			Timestamp:     Time(timestamp),
 		}
@@ -43,7 +43,7 @@ func (g *Generator) Next() (ID, error) {
 	g.lock.Unlock()
 
 	if sequence > sequenceLimit {
-		return zeroID, SequenceUnavailable{BucketID: g.bucketID, Timestamp: Time(timestamp)}
+		return zeroID, SequenceUnavailable{Bucket: g.bucketID, Timestamp: Time(timestamp)}
 	}
 
 	return ID((g.bucketID << (timestampBits + sequenceBits)) | (timestamp << sequenceBits) | sequence), nil
