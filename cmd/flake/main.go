@@ -31,7 +31,7 @@ func newFlakeCommand() *cobra.Command {
 
 	rootCmd.Flags().Uint64VarP(&opts.bucket, "bucket", "b", 0, "Bucket id for all generated flake ids.")
 	rootCmd.Flags().IntVarP(&opts.count, "count", "c", 1, "Number of flake ids to generate.")
-	rootCmd.Flags().StringVarP(&opts.format, "format", "f", DECIMAL, "Output format. Can be one of: binary, octal, int, or hex.")
+	rootCmd.Flags().StringVarP(&opts.format, "format", "f", decimal, "Output format. Can be one of: binary, octal, int, or hex.")
 
 	return rootCmd
 }

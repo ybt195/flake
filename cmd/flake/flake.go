@@ -8,10 +8,10 @@ import (
 )
 
 const (
-	BINARY  string = "binary"
-	OCTAL   string = "octal"
-	DECIMAL string = "decimal"
-	HEX     string = "hex"
+	binary  string = "binary"
+	octal   string = "octal"
+	decimal string = "decimal"
+	hex     string = "hex"
 )
 
 func runFlake(_ *cobra.Command, _ []string) error {
@@ -33,13 +33,13 @@ func runFlake(_ *cobra.Command, _ []string) error {
 
 func formatID(id flake.ID) (string, error) {
 	switch opts.format {
-	case BINARY:
+	case binary:
 		return id.Binary(), nil
-	case OCTAL:
+	case octal:
 		return id.Octal(), nil
-	case DECIMAL:
+	case decimal:
 		return fmt.Sprint(id.Uint64()), nil
-	case HEX:
+	case hex:
 		return id.Hex(), nil
 	default:
 		return "", fmt.Errorf("unexpected format: %s", opts.format)
