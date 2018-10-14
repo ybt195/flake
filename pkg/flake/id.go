@@ -35,6 +35,14 @@ const (
 // ID is a unique 64-bit unsigned integer generated based on time.
 type ID uint64
 
+// FromBytes returns the id represented by the 8-byte byte array.
+func FromBytes(bytes []byte) (ID, error) {
+	if len(bytes) != 8 {
+		return zeroID, fmt.Errorf("unexpected number of bytes for flake id: %d", len(bytes))
+	}
+	return ID(binary.BigEndian.Uint64(bytes)), nil
+}
+
 // Bucket returns the bucket component of the ID.
 func (f ID) Bucket() uint64 {
 	return f.Uint64() >> (timestampBits + sequenceBits)
