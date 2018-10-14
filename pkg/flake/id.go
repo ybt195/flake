@@ -34,10 +34,6 @@ func (f ID) Sequence() uint64 {
 	return f.Uint64() << (timestampBits + bucketBits) >> (timestampBits + bucketBits)
 }
 
-func (f ID) String() string {
-	return fmt.Sprintf("{Bucket: %d, Time: %s, Sequence: %d}", f.Bucket(), f.Time(), f.Sequence())
-}
-
 // Uint64 returns the uint64 representation of the ID.
 func (f ID) Uint64() uint64 {
 	return uint64(f)
@@ -63,4 +59,8 @@ func (f ID) Octal() string {
 // Hex returns the base-16 representation of the ID.
 func (f ID) Hex() string {
 	return fmt.Sprintf("%016x", f.Uint64())
+}
+
+func (f ID) String() string {
+	return fmt.Sprintf("{Bucket: %d, Time: %s, Sequence: %d}", f.Bucket(), f.Time(), f.Sequence())
 }
