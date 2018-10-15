@@ -58,6 +58,34 @@ func (f ID) Sequence() uint64 {
 	return f.Uint64() << (timestampBits + bucketBits) >> (timestampBits + bucketBits)
 }
 
+// Before returns true if this id comes before the provided id. Ordering is defined as first ordering
+// by the timestamp, then by the bucket, and lastly by the sequence. While there is a defined global
+// ordering of ids, the primary requirement for ordering is that there is ordering of time and then
+// sequence for a bucket. Bucket ordering may not be entirely accurate due to clock skew between
+// generators.
+func (f ID) Before(o ID) bool {
+	fTime, oTime := f.Time(), o.Time()
+	if fTime.Equal(oTime) {
+		fBucket, oBucket := f.Bucket(), o.Bucket()
+		if fBucket == oBucket {
+			return f.Sequence() < o.Sequence()
+		}
+		return fBucket < oBucket
+	}
+	return fTime.Before(oTime)
+}
+
+// After returns true if this id comes after the provided id. See `Before` for a full description of
+// id ordering.
+func (f ID) After(o ID) bool {
+	return !f.Equal(o) && !f.Before(o)
+}
+
+// Equal returns true if the two ids are equal and false otherwise.
+func (f ID) Equal(o ID) bool {
+	return f == o
+}
+
 // Uint64 returns the uint64 representation of the ID.
 func (f ID) Uint64() uint64 {
 	return uint64(f)

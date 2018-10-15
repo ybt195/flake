@@ -41,6 +41,21 @@ func (f Time) String() string {
 	return f.StandardTime().Format("2006-01-02T15:04:05.999Z07:00")
 }
 
+// Before returns true if this time is before the provided time and false otherwise.
+func (f Time) Before(o Time) bool {
+	return f < o
+}
+
+// After returns true if this time is after the provided time and false otherwise.
+func (f Time) After(o Time) bool {
+	return f > o
+}
+
+// Equal returns true if the two times are equal to one another and false otherwise.
+func (f Time) Equal(o Time) bool {
+	return f == o
+}
+
 func now() uint64 {
 	return toMillis(time.Now()) - epoch
 }
