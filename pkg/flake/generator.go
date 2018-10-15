@@ -21,6 +21,7 @@ import (
 	"sync"
 )
 
+// Generator generates unique flake ids.
 type Generator struct {
 	bucketID         uint64
 	currentTimestamp uint64
@@ -28,6 +29,7 @@ type Generator struct {
 	lock             sync.Mutex
 }
 
+// New returns a new flake id generator configured with the bucket id.
 func New(bucketID uint64) (*Generator, error) {
 	if bucketID > bucketLimit {
 		return nil, fmt.Errorf("bucket id must be between 0 and %d: %d provided", bucketLimit, bucketID)
@@ -39,6 +41,8 @@ func New(bucketID uint64) (*Generator, error) {
 	}, nil
 }
 
+// Next returns the next id in the generator. An error is returned if the wall clock moves back in
+// time or if too many ids have been generated for the same timestamp.
 func (g *Generator) Next() (ID, error) {
 	timestamp := now()
 
@@ -65,6 +69,7 @@ func (g *Generator) Next() (ID, error) {
 	return ID((g.bucketID << (timestampBits + sequenceBits)) | (timestamp << sequenceBits) | sequence), nil
 }
 
+// Must returns the next id in the generator. Must will block until an ID is available.
 func (g *Generator) Must() ID {
 	for {
 		if id, err := g.Next(); err == nil {
