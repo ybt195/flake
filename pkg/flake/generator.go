@@ -31,8 +31,8 @@ type Generator struct {
 
 // New returns a new flake id generator configured with the bucket id.
 func New(bucketID uint64) (*Generator, error) {
-	if bucketID > bucketLimit {
-		return nil, fmt.Errorf("bucket id must be between 0 and %d: %d provided", bucketLimit, bucketID)
+	if bucketID > BucketLimit {
+		return nil, fmt.Errorf("bucket id must be between 0 and %d: %d provided", BucketLimit, bucketID)
 	}
 	return &Generator{
 		bucketID:         bucketID,
@@ -62,11 +62,11 @@ func (g *Generator) Next() (ID, error) {
 	g.currentSequence++
 	g.lock.Unlock()
 
-	if sequence > sequenceLimit {
+	if sequence > SequenceLimit {
 		return zeroID, SequenceUnavailable{Bucket: g.bucketID, Timestamp: Time(timestamp)}
 	}
 
-	return ID((g.bucketID << (timestampBits + sequenceBits)) | (timestamp << sequenceBits) | sequence), nil
+	return ID((g.bucketID << (TimestampBits + SequenceBits)) | (timestamp << SequenceBits) | sequence), nil
 }
 
 // Must returns the next id in the generator. Must will block until an ID is available.

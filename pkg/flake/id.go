@@ -21,15 +21,24 @@ import (
 	"fmt"
 )
 
+const zeroID = ID(0)
+
 const (
-	zeroID = ID(0)
+	// BucketBits is the number of bits dedicated to the bucket of the id
+	BucketBits = 10
+	// TimestampBits is the number of bits dedicated to the timestamp (in milliseconds) of the id.
+	TimestampBits = 42
+	// SequenceBits is the number of bits dedicated to the sequence number of the id.
+	SequenceBits = 12
+)
 
-	bucketBits    = 10
-	timestampBits = 42
-	sequenceBits  = 12
-
-	bucketLimit   = 1<<bucketBits - 1
-	sequenceLimit = 1<<sequenceBits - 1
+const (
+	// BucketLimit is the maximum bucket id allowed.
+	BucketLimit = 1<<BucketBits - 1
+	// TimestampLimit is the maximum timestamp allowed.
+	TimestampLimit = 1<<TimestampBits - 1
+	// SequenceLimit is the maximum sequence number allowed.
+	SequenceLimit = 1<<SequenceBits - 1
 )
 
 // ID is a unique 64-bit unsigned integer generated based on time.
@@ -45,17 +54,17 @@ func FromBytes(bytes []byte) (ID, error) {
 
 // Bucket returns the bucket component of the ID.
 func (f ID) Bucket() uint64 {
-	return f.Uint64() >> (timestampBits + sequenceBits)
+	return f.Uint64() >> (TimestampBits + SequenceBits)
 }
 
 // Time returns the time component of the ID.
 func (f ID) Time() Time {
-	return Time(f.Uint64() << (bucketBits) >> (bucketBits + sequenceBits))
+	return Time(f.Uint64() << (BucketBits) >> (BucketBits + SequenceBits))
 }
 
 // Sequence returns the sequence component of the ID.
 func (f ID) Sequence() uint64 {
-	return f.Uint64() << (timestampBits + bucketBits) >> (timestampBits + bucketBits)
+	return f.Uint64() << (TimestampBits + BucketBits) >> (TimestampBits + BucketBits)
 }
 
 // Before returns true if this id comes before the provided id. Ordering is defined as first ordering
