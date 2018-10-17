@@ -24,6 +24,7 @@ import (
 // Nil is the zero flake id.
 const Nil = ID(0)
 
+// These constants define the distribution of bits in a flake id.
 const (
 	// BucketBits is the number of bits dedicated to the bucket of the id
 	BucketBits = 10
@@ -33,6 +34,7 @@ const (
 	SequenceBits = 12
 )
 
+// These constants define the upper limits of all the components in a flake id.
 const (
 	// BucketLimit is the maximum bucket id allowed.
 	BucketLimit = 1<<BucketBits - 1
