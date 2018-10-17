@@ -21,7 +21,8 @@ import (
 	"fmt"
 )
 
-const zeroID = ID(0)
+// Nil is the zero flake id.
+const Nil = ID(0)
 
 const (
 	// BucketBits is the number of bits dedicated to the bucket of the id
@@ -47,7 +48,7 @@ type ID uint64
 // FromBytes returns the id represented by the 8-byte byte array.
 func FromBytes(bytes []byte) (ID, error) {
 	if len(bytes) != 8 {
-		return zeroID, fmt.Errorf("unexpected number of bytes for flake id: %d", len(bytes))
+		return Nil, fmt.Errorf("unexpected number of bytes for flake id: %d", len(bytes))
 	}
 	return ID(binary.BigEndian.Uint64(bytes)), nil
 }
