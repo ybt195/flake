@@ -22,7 +22,16 @@ import (
 )
 
 // Generator generates unique flake ids.
-type Generator struct {
+type Generator interface {
+	// Next returns the next id in the generator. An error is returned if the wall clock moves back in
+	// time or if too many ids have been generated for the same timestamp.
+	Next() (ID, error)
+
+	// Must returns the next id in the generator. Must will block until an ID is available.
+	Must() ID
+}
+
+type generator struct {
 	bucketID         uint64
 	currentTimestamp uint64
 	currentSequence  uint64
@@ -30,20 +39,18 @@ type Generator struct {
 }
 
 // New returns a new flake id generator configured with the bucket id.
-func New(bucketID uint64) (*Generator, error) {
+func New(bucketID uint64) (Generator, error) {
 	if bucketID > BucketLimit {
 		return nil, fmt.Errorf("bucket id must be between 0 and %d: %d provided", BucketLimit, bucketID)
 	}
-	return &Generator{
+	return &generator{
 		bucketID:         bucketID,
 		currentTimestamp: now(),
 		currentSequence:  uint64(0),
 	}, nil
 }
 
-// Next returns the next id in the generator. An error is returned if the wall clock moves back in
-// time or if too many ids have been generated for the same timestamp.
-func (g *Generator) Next() (ID, error) {
+func (g *generator) Next() (ID, error) {
 	timestamp := now()
 
 	g.lock.Lock()
@@ -69,8 +76,7 @@ func (g *Generator) Next() (ID, error) {
 	return ID((g.bucketID << (TimestampBits + SequenceBits)) | (timestamp << SequenceBits) | sequence), nil
 }
 
-// Must returns the next id in the generator. Must will block until an ID is available.
-func (g *Generator) Must() ID {
+func (g *generator) Must() ID {
 	for {
 		if id, err := g.Next(); err == nil {
 			return id
