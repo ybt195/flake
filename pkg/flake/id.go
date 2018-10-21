@@ -105,8 +105,8 @@ func (f ID) Uint64() uint64 {
 
 // Bytes returns a big-endian encoded byte array of the ID.
 func (f ID) Bytes() []byte {
-	buf := make([]byte, 8)
-	binary.BigEndian.PutUint64(buf, f.Uint64())
+	buf := make([]byte, Size)
+	Put(buf, f)
 	return buf
 }
 
@@ -127,4 +127,8 @@ func (f ID) Hex() string {
 
 func (f ID) String() string {
 	return fmt.Sprintf("{Bucket: %d, Time: %s, Sequence: %d}", f.Bucket(), f.Time(), f.Sequence())
+}
+
+func Put(buf []byte, id ID) {
+	binary.BigEndian.PutUint64(buf, id.Uint64())
 }
