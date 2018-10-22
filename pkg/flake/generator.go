@@ -18,6 +18,7 @@ package flake
 
 import (
 	"fmt"
+	"io"
 	"sync"
 )
 
@@ -29,13 +30,24 @@ type Generator interface {
 
 	// Must returns the next id in the generator. Must will block until an ID is available.
 	Must() ID
+
+	io.Closer
 }
 
 type generator struct {
+	closed           bool
 	bucketID         uint64
 	currentTimestamp uint64
 	currentSequence  uint64
 	lock             sync.Mutex
+}
+
+func (g *generator) Close() error {
+	if g.closed {
+		return ErrClosed
+	}
+	g.closed = true
+	return nil
 }
 
 // New returns a new flake id generator configured with the bucket id.
@@ -51,6 +63,10 @@ func New(bucketID uint64) (Generator, error) {
 }
 
 func (g *generator) Next() (ID, error) {
+	if g.closed {
+		return Nil, ErrClosed
+	}
+
 	timestamp := now()
 
 	g.lock.Lock()
@@ -80,6 +96,8 @@ func (g *generator) Must() ID {
 	for {
 		if id, err := g.Next(); err == nil {
 			return id
+		} else if err == ErrClosed {
+			panic(err)
 		}
 	}
 }

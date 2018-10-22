@@ -17,7 +17,8 @@
 package flake
 
 type generatorPool struct {
-	pool chan Generator
+	pool   chan Generator
+	closed bool
 }
 
 // NewPool returns a new flake id generator using the set of bucket ids.
@@ -36,15 +37,31 @@ func NewPool(bucketIDs ...uint64) (Generator, error) {
 }
 
 func (g *generatorPool) Next() (ID, error) {
-	sub := <-g.pool
+	sub, ok := <-g.pool
+	if !ok {
+		return Nil, ErrClosed
+	}
 	defer g.put(sub)
 	return sub.Next()
 }
 
 func (g *generatorPool) Must() ID {
-	sub := <-g.pool
+	sub, ok := <-g.pool
+	if !ok {
+		panic(ErrClosed)
+	}
 	defer g.put(sub)
 	return sub.Must()
+}
+
+func (g *generatorPool) Close() (err error) {
+	for i := 0; i < cap(g.pool); i++ {
+		if cErr := (<-g.pool).Close(); cErr != nil {
+			err = cErr
+		}
+	}
+	close(g.pool)
+	return err
 }
 
 func (g *generatorPool) put(sub Generator) {
