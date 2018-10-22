@@ -135,5 +135,5 @@ func (f ID) Hex() string {
 }
 
 func (f ID) String() string {
-	return fmt.Sprintf("{Bucket: %d, Time: %s, Sequence: %d}", f.Bucket(), f.Time(), f.Sequence())
+	return fmt.Sprintf("{Bucket: %d, Time: %s, Sequence: %d}", f.Bucket(), f.Time().StandardTime(), f.Sequence())
 }
