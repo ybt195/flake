@@ -36,7 +36,7 @@ func (f *ID) Scan(src interface{}) (err error) {
 	case nil:
 		return nil
 	default:
-		return fmt.Errorf("") // TODO Error
+		return fmt.Errorf("incompatible type for flake id: %T", src)
 	}
 	return err
 }
