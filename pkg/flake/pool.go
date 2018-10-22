@@ -21,16 +21,12 @@ type generatorPool struct {
 	closed bool
 }
 
-// NewPool returns a new flake id generator using the set of bucket ids.
-func NewPool(bucketIDs ...uint64) (Generator, error) {
+// NewPool returns a new flake id generator using the underlying set of generators.
+func NewPool(generators ...Generator) (Generator, error) {
 	gPool := &generatorPool{
-		pool: make(chan Generator, len(bucketIDs)),
+		pool: make(chan Generator, len(generators)),
 	}
-	for _, bucketID := range bucketIDs {
-		g, err := New(bucketID)
-		if err != nil {
-			return nil, err
-		}
+	for _, g := range generators {
 		gPool.put(g)
 	}
 	return gPool, nil
