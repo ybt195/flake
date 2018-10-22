@@ -17,8 +17,7 @@
 package flake
 
 type generatorPool struct {
-	pool   chan Generator
-	closed bool
+	pool chan Generator
 }
 
 // NewPool returns a new flake id generator using the underlying set of generators.
