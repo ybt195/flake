@@ -109,8 +109,14 @@ func (f ID) Uint64() uint64 {
 // Bytes returns a big-endian encoded byte array of the ID.
 func (f ID) Bytes() []byte {
 	buf := make([]byte, Size)
-	Put(buf, f)
+	f.Put(buf)
 	return buf
+}
+
+// Put places the id into the specified byte buffer. The buffer must be at least the size of
+// a uint64. The buffer is big-endian encoded.
+func (f ID) Put(buf []byte) {
+	binary.BigEndian.PutUint64(buf, f.Uint64())
 }
 
 // Binary returns the base-2 representation of the ID.
@@ -130,8 +136,4 @@ func (f ID) Hex() string {
 
 func (f ID) String() string {
 	return fmt.Sprintf("{Bucket: %d, Time: %s, Sequence: %d}", f.Bucket(), f.Time(), f.Sequence())
-}
-
-func Put(buf []byte, id ID) {
-	binary.BigEndian.PutUint64(buf, id.Uint64())
 }
