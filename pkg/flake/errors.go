@@ -16,7 +16,14 @@
 
 package flake
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
+
+// ErrClosed notifies that the generator has already been closed and can no longer produce any more
+// ids.
+var ErrClosed = errors.New("generator already closed")
 
 // SequenceUnavailable represents an error when trying to generate an id where the maximum number of
 // ids have been generated for that timestamp.
