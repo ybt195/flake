@@ -30,14 +30,38 @@ const (
 	hex     string = "hex"
 )
 
-func runFlake(_ *cobra.Command, _ []string) error {
+type generateOptions struct {
+	bucket uint64
+	count  int
+	format string
+}
+
+func newGenerateCommand() *cobra.Command {
+	var opts = generateOptions{}
+
+	var cmd = &cobra.Command{
+		Use:   "generate",
+		Short: "Generates time-based 64-bit unsigned integers",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return generate(opts)
+		},
+	}
+
+	cmd.Flags().Uint64VarP(&opts.bucket, "bucket", "b", 0, "Bucket id for all generated flake ids.")
+	cmd.Flags().IntVarP(&opts.count, "count", "c", 1, "Number of flake ids to generate.")
+	cmd.Flags().StringVarP(&opts.format, "format", "f", decimal, "Output format. Can be one of: binary, octal, int, or hex.")
+
+	return cmd
+}
+
+func generate(opts generateOptions) error {
 	g, err := flake.New(opts.bucket)
 	if err != nil {
 		return err
 	}
 
 	for i := 0; i < opts.count; i++ {
-		id, err := formatID(g.Must())
+		id, err := formatID(g.Must(), opts.format)
 		if err != nil {
 			return err
 		}
@@ -47,8 +71,8 @@ func runFlake(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
-func formatID(id flake.ID) (string, error) {
-	switch opts.format {
+func formatID(id flake.ID, format string) (string, error) {
+	switch format {
 	case binary:
 		return id.Binary(), nil
 	case octal:
@@ -58,6 +82,6 @@ func formatID(id flake.ID) (string, error) {
 	case hex:
 		return id.Hex(), nil
 	default:
-		return "", fmt.Errorf("unexpected format: %s", opts.format)
+		return "", fmt.Errorf("unexpected format: %s", format)
 	}
 }
