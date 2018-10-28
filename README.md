@@ -1,4 +1,6 @@
 <p align="center">
+
+  <img src="docs/assets/images/icon.png" width="80" height="80" alt="flake logo">
   <h1 align="center">Flake</h1>
 
   <p align="center">
