@@ -11,9 +11,22 @@
     ·
     <a href="https://godoc.org/github.com/ybt195/flake/pkg/flake">Documentation</a>
   </p>
-</p>
 
-<br>
+  <p align="center">
+    <a href="https://travis-ci.org/ybt195/flake">
+      <img alt="Build Status" src="https://travis-ci.org/ybt195/flake.svg?branch=master">
+    </a>
+    <a href="https://codecov.io/gh/ybt195/flake">
+      <img src="https://codecov.io/gh/ybt195/flake/branch/master/graph/badge.svg" />
+    </a>
+    <a href="https://goreportcard.com/report/github.com/ybt195/flake">
+      <img alt="Go Report Status" src="https://goreportcard.com/badge/github.com/ybt195/flake">
+    </a>
+    <a href="https://opensource.org/licenses/Apache-2.0">
+      <img alt="Apache License, Version 2.0" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg">
+    </a>
+  </p>
+</p>
 
 ## Table of contents
 
@@ -40,4 +53,3 @@ Note that all contributors are expected to follow the [Code of Conduct](CODE_OF_
 ## License
 
 Flake is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0). For more information, see the [License](LICENSE) file. 
-
