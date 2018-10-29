@@ -37,7 +37,7 @@ func NewManualCoordinator(buckets ...uint64) (Coordinator, error) {
 }
 
 func (c *manualCoordinator) Get() (flake.Generator, error) {
-	generators := make([]flake.Generator, len(c.buckets))
+	generators := make([]flake.Generator, 0, len(c.buckets))
 	for _, bucket := range c.buckets {
 		generator, err := flake.New(bucket)
 		if err != nil {
