@@ -13,6 +13,9 @@
   </p>
 
   <p align="center">
+    <a href="https://godoc.org/github.com/ybt195/flake/pkg/flake">
+      <img alt="GoDoc Reference" src="https://godoc.org/github.com/ybt195/flake/pkg/flake?status.svg">
+    </a>
     <a href="https://travis-ci.org/ybt195/flake">
       <img alt="Build Status" src="https://travis-ci.org/ybt195/flake.svg?branch=master">
     </a>
