@@ -1,4 +1,4 @@
-.PHONY: default deps clean build test coverage
+.PHONY: default deps clean build test coverage validate install
 
 default: build
 
