@@ -19,7 +19,6 @@ package flake
 import (
 	"fmt"
 	"io"
-	"sync"
 )
 
 // Generator generates unique flake ids.
@@ -39,7 +38,6 @@ type generator struct {
 	bucketID         uint64
 	currentTimestamp uint64
 	currentSequence  uint64
-	lock             sync.Mutex
 }
 
 func (g *generator) Close() error {
@@ -69,9 +67,7 @@ func (g *generator) Next() (ID, error) {
 
 	timestamp := now()
 
-	g.lock.Lock()
 	if timestamp < g.currentTimestamp {
-		g.lock.Unlock()
 		return Nil, TimeMovedBack{
 			Bucket:        g.bucketID,
 			LastTimestamp: Time(g.currentTimestamp),
@@ -83,7 +79,6 @@ func (g *generator) Next() (ID, error) {
 	}
 	sequence := g.currentSequence
 	g.currentSequence++
-	g.lock.Unlock()
 
 	if sequence > SequenceLimit {
 		return Nil, SequenceUnavailable{Bucket: g.bucketID, Timestamp: Time(timestamp)}
