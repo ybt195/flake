@@ -25,7 +25,8 @@ import (
 )
 
 var timeFixture = FromStandardTime(time.Date(2015, 1, 1, 0, 0, 0, 0, time.UTC))
-var formattedTimeFixture = "2015-01-01T00:00:00Z"
+
+const formattedTimeFixture = "2015-01-01T00:00:00Z"
 
 func TestSequenceUnavailable_Error(t *testing.T) {
 	err := SequenceUnavailable{
