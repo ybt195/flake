@@ -1,6 +1,7 @@
 .PHONY: default clean build build-docker test coverage validate package
 
 GO111MODULE=on
+VERSION=$(shell cat VERSION)
 
 default: build
 
@@ -14,7 +15,7 @@ build:
 	go build ./...
 
 build-docker:
-	docker build -t ybt195/flake .
+	docker build -t ybt195/flake:$(VERSION) .
 
 test: build
 	go test -v ./...
