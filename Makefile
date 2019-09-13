@@ -1,4 +1,4 @@
-.PHONY: default clean build build-docker test coverage validate install
+.PHONY: default clean build build-docker test coverage validate package
 
 GO111MODULE=on
 
@@ -27,5 +27,5 @@ coverage: build
 validate: test
 	golangci-lint run
 
-install: validate
-	go install -i ./cmd/flake
+package: validate
+	go build -o ./dist/flake ./cmd/flake
