@@ -1,15 +1,14 @@
-.PHONY: default deps clean build test coverage validate install
+.PHONY: default clean build test coverage validate install
+
+GO111MODULE=on
 
 default: build
-
-deps:
-	dep ensure
 
 clean:
 	go clean -i
 	rm -f flake-coverage.out
 
-build: deps
+build:
 	go build ./...
 
 test: build
