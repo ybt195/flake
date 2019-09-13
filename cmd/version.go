@@ -14,31 +14,10 @@
  * limitations under the License.
  */
 
-package main
+package cmd
 
-import (
-	"fmt"
-	"os"
-
-	"github.com/spf13/cobra"
-	"github.com/ybt195/flake/cmd"
+var (
+	Version = "dev"
+	Commit  = "none"
+	Date    = "unknown"
 )
-
-func newFlakeCommand() *cobra.Command {
-	var rootCmd = &cobra.Command{
-		Use:     "flake",
-		Version: fmt.Sprintf("%s (build %s on %s)", cmd.Version, cmd.Commit, cmd.Date),
-		Short:   "Flake generates time-based 64-bit unsigned integers",
-	}
-
-	rootCmd.AddCommand(newGenerateCommand())
-
-	return rootCmd
-}
-
-func main() {
-	if err := newFlakeCommand().Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-}

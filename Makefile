@@ -2,6 +2,7 @@
 
 GO111MODULE=on
 VERSION=$(shell cat VERSION)
+LDFLAGS="-X github.com/ybt195/flake/cmd.Version=${VERSION} -X github.com/ybt195/flake/cmd.Commit=$(shell git rev-parse HEAD) -X github.com/ybt195/flake/cmd.Date=$(shell date +%Y-%m-%d.%H:%M:%S)"
 
 default: build
 
@@ -29,4 +30,4 @@ validate: test
 	golangci-lint run
 
 package: validate
-	go build -o ./dist/flake ./cmd/flake
+	go build -ldflags ${LDFLAGS} -o ./dist/flake ./cmd/flake

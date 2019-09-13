@@ -6,5 +6,7 @@
 !go.mod
 !go.sum
 !Makefile
+!VERSION
+!.git/
 
 *_test.go
