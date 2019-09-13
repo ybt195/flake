@@ -7,6 +7,8 @@ default: build
 clean:
 	go clean -i
 	rm -f flake-coverage.out
+	rm -rf dist/
+	rm -rf vendor/
 
 build:
 	go build ./...
