@@ -1,4 +1,4 @@
-.PHONY: default clean build test coverage validate install
+.PHONY: default clean build build-docker test coverage validate install
 
 GO111MODULE=on
 
@@ -10,6 +10,9 @@ clean:
 
 build:
 	go build ./...
+
+build-docker:
+	docker build -t ybt195/flake .
 
 test: build
 	go test -v ./...
